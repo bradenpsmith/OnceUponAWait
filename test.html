@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ultimate Ride Metric • Once Upon a Wait Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Explore the Ultimate Ride Metric with live filters for any attraction." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://onceuponawait.substack.com/favicon.ico" />
+  <meta property="og:title" content="Ultimate Ride Metric • Once Upon a Wait Tools" />
+  <meta property="og:description" content="Pick an attraction and switch metrics—Composite, Time, Opportunity—in one place." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tools.onceuponawait.com/ultimate-ride-metric" />
+  <style>
+    :root{
+      --text:#222;
+      --muted:#666;
+      --bg:#fff;
+      --link:#0b5fff;          /* Substack-ish blue */
+      --accent:#0b5fff;
+      --border:#eee;
+      --pill:#f6f8ff;
+      --radius:10px;
+      --maxw:720px;            /* Substack center column */
+    }
+    html,body{background:var(--bg); color:var(--text); font-family:'Literata', Georgia, serif; line-height:1.6;}
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:28px 20px 64px;}
+    header{margin-bottom:20px; text-align:center;}
+    .brand{font-weight:700; font-size:24px; letter-spacing:.2px;}
+    .sub{color:var(--muted); font-size:14px; margin-top:4px;}
+    nav.top{margin:18px 0 8px; text-align:center; font-size:15px;}
+    nav.top a{color:var(--link); text-decoration:none; margin:0 .4rem;}
+    nav.top a:hover{text-decoration:underline;}
+    h1{font-size:34px; line-height:1.25; margin:18px 0 8px;}
+    h2{font-size:22px; margin:22px 0 10px;}
+    p.lede{font-size:18px; color:var(--muted); margin:6px 0 18px;}
+    .bar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; background:#fafafa; border:1px solid var(--border); padding:12px; border-radius:var(--radius); margin:18px 0;}
+    label{font-weight:600; margin-right:6px;}
+    select, .tabbar button{
+      font: inherit; border:1px solid var(--border); background:#fff; padding:8px 10px; border-radius:8px; cursor:pointer;
+    }
+    .tabbar{display:flex; gap:8px; flex-wrap:wrap;}
+    .tabbar button[aria-pressed="true"]{background:var(--pill); border-color:#dfe6ff; color:#153ea8; font-weight:600;}
+    .frame {width:100%; border:0; height:560px; border-radius:8px; background:#fff; box-shadow:0 0 0 1px var(--border) inset;}
+    .hint{font-size:14px; color:var(--muted); margin-top:8px;}
+    .cta-row{display:flex; gap:10px; flex-wrap:wrap; margin:20px 0;}
+    .btn{display:inline-block; padding:10px 14px; border-radius:999px; text-decoration:none; border:1px solid var(--border); background:#fff;}
+    .btn.primary{background:var(--accent); color:#fff; border-color:var(--accent);}
+    footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--border); color:var(--muted); font-size:14px; text-align:center;}
+    /* Small screens */
+    @media (max-width:560px){
+      h1{font-size:28px;}
+      .frame{height:520px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">Once Upon a Wait</div>
+      <div class="sub">The Happiest Stats on Earth</div>
+      <nav class="top">
+        <a href="https://onceuponawait.com">🏰 Articles</a> ·
+        <a href="https://onceuponawait.com/archive">📰 Archive</a> ·
+        <a href="https://onceuponawait.substack.com/subscribe">📬 Subscribe</a>
+      </nav>
+    </header>
+
+    <main>
+      <h1>🎢 Ultimate Ride Metric</h1>
+      <p class="lede">Pick an attraction and switch views between <strong>Composite</strong>, <strong>Time Performance</strong>, and <strong>Opportunity</strong>. Feels like the newsletter—works like a tool.</p>
+
+      <!-- Controls -->
+      <div class="bar" role="region" aria-label="Explorer controls">
+        <div>
+          <label for="ride">Attraction</label>
+          <!-- Swap these options with your ride list -->
+          <select id="ride">
+            <option selected>Haunted Mansion</option>
+            <option>Space Mountain</option>
+            <option>Pirates of the Caribbean</option>
+            <option>Peter Pan’s Flight</option>
+            <option>It’s a Small World</option>
+          </select>
+        </div>
+
+        <div class="tabbar" role="tablist" aria-label="Metric">
+          <!-- Replace data-metric IDs with your Datawrapper chart IDs -->
+          <button class="tab" role="tab" aria-pressed="true"  data-metric="abcd1">Composite</button>
+          <button class="tab" role="tab" aria-pressed="false" data-metric="efgh2">Time</button>
+          <button class="tab" role="tab" aria-pressed="false" data-metric="ijkl3">Opportunity</button>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <!-- Replace the default src with your "Composite" DW chart ID and a default attraction -->
+      <iframe
+        id="viz"
+        class="frame"
+        title="Ultimate Ride Metric"
+        src="https://datawrapper.dwcdn.net/abcd1/?filter[Attraction]=Haunted%20Mansion"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+      ></iframe>
+
+      <p class="hint">Tip: Share a specific state by copying the URL after you make a selection—this page updates it as <code>?ride=</code> and <code>?metric=</code>.</p>
+
+      <div class="cta-row">
+        <a class="btn" href="https://onceuponawait.com/p/the-ultimate-ride-metric">← Read the explainer</a>
+        <a class="btn primary" href="https://onceuponawait.substack.com/subscribe">Get updates by email</a>
+      </div>
+
+      <!-- No-JS fallback links (keeps the page usable if scripts are blocked) -->
+      <noscript>
+        <h2>Quick links (no JavaScript)</h2>
+        <p>
+          Composite:
+          <a href="https://datawrapper.dwcdn.net/abcd1/?filter[Attraction]=Haunted%20Mansion">Haunted Mansion</a> ·
+          <a href="https://datawrapper.dwcdn.net/abcd1/?filter[Attraction]=Space%20Mountain">Space Mountain</a> ·
+          <a href="https://datawrapper.dwcdn.net/abcd1/?filter[Attraction]=Pirates%20of%20the%20Caribbean">Pirates</a>
+        </p>
+      </noscript>
+    </main>
+
+    <footer>
+      © <span id="year"></span> Once Upon a Wait ·
+      <a href="https://onceuponawait.com">Home</a> ·
+      <a href="https://onceuponawait.substack.com/subscribe">Subscribe</a>
+    </footer>
+  </div>
+
+  <!-- Minimal JS to sync ride + metric selections to the single Datawrapper iframe and to URL params -->
+  <script>
+    (function(){
+      // Replace with your real chart IDs
+      const METRICS = { Composite:"abcd1", Time:"efgh2", Opportunity:"ijkl3" };
+
+      const rideSel = document.getElementById('ride');
+      const tabs = Array.from(document.querySelectorAll('.tab'));
+      const frame = document.getElementById('viz');
+
+      // Parse initial URL params (?ride= & ?metric=) so you can link from Substack with a preselected state
+      const params = new URLSearchParams(location.search);
+      const rideFromURL = params.get('ride');
+      const metricFromURL = params.get('metric'); // expect values like abcd1 / efgh2 / ijkl3
+
+      if (rideFromURL) rideSel.value = rideFromURL;
+
+      if (metricFromURL) {
+        tabs.forEach(b => b.setAttribute('aria-pressed', b.dataset.metric === metricFromURL ? 'true':'false'));
+        // If someone passes an unknown ID, we’ll ignore and keep default
+      }
+
+      function currentMetricId(){
+        const pressed = tabs.find(b => b.getAttribute('aria-pressed') === 'true');
+        return pressed ? pressed.dataset.metric : Object.values(METRICS)[0];
+      }
+
+      function updateFrame(){
+        const ride = rideSel.value;
+        const metric = currentMetricId();
+        frame.src = `https://datawrapper.dwcdn.net/${metric}/?filter[Attraction]=${encodeURIComponent(ride)}`;
+
+        // Keep URL shareable without page reload
+        const url = new URL(location.href);
+        url.searchParams.set('ride', ride);
+        url.searchParams.set('metric', metric);
+        history.replaceState({}, '', url);
+      }
+
+      rideSel.addEventListener('change', updateFrame);
+      tabs.forEach(b => b.addEventListener('click', () => {
+        tabs.forEach(x => x.setAttribute('aria-pressed','false'));
+        b.setAttribute('aria-pressed','true');
+        updateFrame();
+      }));
+
+      // Set footer year & initialize
+      document.getElementById('year').textContent = new Date().getFullYear();
+      updateFrame();
+    })();
+  </script>
+</body>
+</html>
