@@ -7,29 +7,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Literata:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="/assets/images/favicon-32.png">
-  <style>
-    :root{--bg:#fff;--text:#222;--muted:#666;--link:#0b5fff;--border:#eee;--maxw:720px;--radius:14px;}
-    html,body{background:var(--bg);color:var(--text);font-family:'Literata',Georgia,serif;line-height:1.6;}
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:28px 20px 64px;}
-    a{color:var(--link);text-decoration:none;} a:hover{text-decoration:underline;}
-    header{text-align:center;margin-bottom:24px;}
-    .brand{font-weight:700;font-size:24px;}
-    .sub{color:var(--muted);font-size:14px;margin-top:4px;}
-    nav.top{margin:18px 0 8px;text-align:center;font-size:15px;}
-    nav.top a{margin:0 .45rem;}
-    footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:14px;text-align:center;}
-    .cards{display:grid;grid-template-columns:1fr;gap:14px;}@media(min-width:860px){.cards{grid-template-columns:1fr 1fr;}}
-    .card{border:1px solid var(--border);border-radius:var(--radius);padding:16px;background:#fff;}
-    .card h3{margin:0 0 4px;font-size:20px;} .card p{margin:0 0 10px;}
-  </style>
 </head>
 <body>
-  <div class="wrap">
-    {% include nav.html %}
-    <main>
-      {{ content }}
-    </main>
-    {% include footer.html %}
-  </div>
+  {% include header.html %}
+
+  <main class="main-content" style="max-width:900px;margin:0 auto;padding:32px 20px;">
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
 </body>
 </html>
