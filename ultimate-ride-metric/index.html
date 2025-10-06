@@ -1,14 +1,222 @@
 ---
 layout: default
 title: "Ultimate Ride Metric"
-description: "Pick an attraction and switch views between Composite, Time, and Opportunity."
+description: "Pick a park and attraction to see Composite, Time, and Opportunity views."
 ---
 
-<h1>🎢 Ultimate Ride Metric</h1>
-<p class="lede">Pick an attraction and switch views between <strong>Composite</strong>, <strong>Time Performance</strong>, and <strong>Opportunity</strong>.</p>
+<section class="urm-wrap">
+  <!-- Controls -->
+  <header class="urm-controls" role="region" aria-label="Filters">
+    <div class="control">
+      <label for="park">Park</label>
+      <select id="park"></select>
+    </div>
+    <div class="control">
+      <label for="attraction">Attraction</label>
+      <select id="attraction"></select>
+    </div>
+  </header>
 
-<!-- your Controls + iframe here (exactly as you have them) -->
+  <!-- Insight (now a feature card) -->
+  <aside class="urm-insight" id="insight" aria-live="polite"></aside>
+
+  <!-- Stacked tables + metric blurbs -->
+  <section class="urm-frames">
+    <div class="metric">
+      <h3 class="metric-head">Composite Metric</h3>
+      <p class="metric-blurb">
+        Balances two ideas at once: how good this time is for <em>this ride</em> compared to its other times, and how this ride compares to <em>other rides</em> available in the same time slot. A higher score means “this is a smart pick right now.”
+      </p>
+      <iframe id="frame-composite" title="Composite Metric" loading="lazy"></iframe>
+    </div>
+
+    <div class="metric">
+      <h3 class="metric-head">Time Performance Metric</h3>
+      <p class="metric-blurb">
+        Looks only at the ride itself. A score near 1 means this window is one of the ride’s best times relative to all the other times you could ride it.
+      </p>
+      <iframe id="frame-time" title="Time Performance Metric" loading="lazy"></iframe>
+    </div>
+
+    <div class="metric">
+      <h3 class="metric-head">Opportunity Metric</h3>
+      <p class="metric-blurb">
+        Compares across the park. A score near 1 means this ride is among the best standby values you’ll find anywhere in the park during this time slot.
+      </p>
+      <iframe id="frame-opportunity" title="Opportunity Metric" loading="lazy"></iframe>
+    </div>
+  </section>
+</section>
+
+<style>
+:root{ --ink:#202022; --muted:#6b6f76; --border:#e9e9ea; --pill:#f4f6ff; }
+
+.urm-wrap{max-width:1100px;margin:10px auto 40px;padding:0 20px;}
+.urm-controls{
+  position:sticky;top:64px;z-index:5;background:#fff;border:1px solid var(--border);
+  border-radius:12px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+  padding:10px 12px;margin-bottom:12px;
+}
+.control{display:flex;gap:8px;align-items:center;}
+label{font-size:14px;color:#555;}
+select{
+  padding:8px 10px;border:1px solid #dcdde1;border-radius:8px;font-size:15px;
+  min-width:220px;background:#fff;
+}
+
+/* Insight card */
+.urm-insight{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+  margin:40px 0 14px; /* Added top margin */
+  background:#fff;
+  box-shadow:0 6px 20px rgba(0,0,0,.04);
+}
+
+.insight-eyebrow{
+  display:inline-block; font-size:12px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--muted); background:var(--pill); padding:2px 8px; border-radius:999px; margin-right:8px;
+}
+.insight-title{ margin:8px 0 6px; font-family:'Literata', Georgia, serif; font-size:20px; }
+.insight-kicker{ color:var(--muted); margin:0 0 8px; }
+.insight-text{ margin:0; color:var(--ink); line-height:1.5; }
+
+/* Metrics */
+.metric{ margin-top:20px; }
+.metric-head{ font-family:'Literata', Georgia, serif; margin:8px 0 6px; }
+.metric-blurb{ margin:0 0 8px; color:var(--muted); line-height:1.45; }
+.urm-frames iframe{
+  width:100%;height:520px;border:1px solid var(--border);border-radius:12px;background:#fff;
+}
+
+@media (max-width:760px){
+  .urm-controls{gap:10px;}
+  select{min-width:100%;}
+}
+</style>
 
 <script>
-/* your existing JS that swaps Datawrapper URLs */
+// ---------- CONFIG ----------
+const PARKS = {
+  "magic-kingdom": "Magic Kingdom Park",
+  "epcot": "EPCOT",
+  "hollywood-studios": "Disney's Hollywood Studios",
+  "animal-kingdom": "Disney's Animal Kingdom"
+};
+
+// One list; each attraction knows its park + entity slug
+const ATTRACTIONS = [
+  { park:"magic-kingdom", slug:"its-a-small-world", name:`"it's a small world"`,
+    insight:"Mornings or evenings are usually the sweet spots. Sundays trend strong overall; avoid mid-day standby." },
+  { park:"magic-kingdom", slug:"seven-dwarfs-mine-train", name:"Seven Dwarfs Mine Train",
+    insight:"Rope drop or late nights tend to win; mid-afternoons rarely shine." },
+  { park:"animal-kingdom", slug:"flight-of-passage", name:"Avatar Flight of Passage",
+    insight:"Afternoons can surprise; evenings are often friendlier. Tuesdays sometimes open up in the morning." },
+  // …add the rest
+];
+
+// One set of DW charts for all parks (pass only the entity slug)
+const DW = {
+  composite:  "https://datawrapper.dwcdn.net/XXXX1/",
+  time:       "https://datawrapper.dwcdn.net/XXXX2/",
+  opportunity:"https://datawrapper.dwcdn.net/XXXX3/"
+};
+const DW_PARAM_KEY = "a";
+
+// ---------- HELPERS ----------
+const $ = (q,root=document)=>root.querySelector(q);
+const parkSel = $("#park");
+const attrSel = $("#attraction");
+const insightBox = $("#insight");
+const frames = {
+  composite: $("#frame-composite"),
+  time: $("#frame-time"),
+  opportunity: $("#frame-opportunity")
+};
+
+const params = new URLSearchParams(location.search);
+const getParam = (k, def="") => params.get(k) ?? def;
+const setParams = (obj) => {
+  const p = new URLSearchParams(location.search);
+  Object.entries(obj).forEach(([k,v]) => (v==null ? p.delete(k) : p.set(k,v)));
+  history.replaceState(null,"",`?${p.toString()}`);
+};
+
+function makeSrc(base, entitySlug){
+  const url = new URL(base);
+  url.searchParams.set(DW_PARAM_KEY, entitySlug);
+  url.searchParams.set("theme","light"); // optional
+  return url.toString();
+}
+
+// ---------- UI BUILD ----------
+// Parks dropdown
+Object.entries(PARKS).forEach(([slug, name])=>{
+  const opt=document.createElement("option");
+  opt.value=slug; opt.textContent=name;
+  parkSel.appendChild(opt);
+});
+
+// Initial values: if ?a present, infer park; else use ?park or first
+const aParam = getParam("a","");
+const aFromParam = ATTRACTIONS.find(x=>x.slug===aParam) || null;
+let initialPark = aFromParam?.park || getParam("park","");
+if(!PARKS[initialPark]) initialPark = Object.keys(PARKS)[0];
+parkSel.value = initialPark;
+
+function populateAttractions(parkSlug, chosenSlug){
+  const list = ATTRACTIONS
+    .filter(a=>a.park===parkSlug)
+    .sort((a,b)=> a.name.localeCompare(b.name));
+  attrSel.innerHTML = "";
+  for(const a of list){
+    const opt=document.createElement("option");
+    opt.value=a.slug; opt.textContent=a.name;
+    attrSel.appendChild(opt);
+  }
+  // default to chosen if valid else first alphabetically
+  const valid = list.some(a=>a.slug===chosenSlug);
+  attrSel.value = valid ? chosenSlug : (list[0]?.slug || "");
+}
+
+populateAttractions(parkSel.value, aFromParam?.slug || getParam("a",""));
+
+function renderInsight(){
+  const parkName = PARKS[parkSel.value];
+  const entity = attrSel.value;
+  const a = ATTRACTIONS.find(x=>x.slug===entity);
+  const name = a?.name || "";
+  const text = a?.insight || "";
+
+  insightBox.innerHTML = `
+    <span class="insight-eyebrow">Quick Insight</span>
+    <div class="insight-title">${name}</div>
+    <div class="insight-kicker">${parkName}</div>
+    <p class="insight-text">${text}</p>
+  `;
+}
+
+function updateFrames(){
+  const entity = attrSel.value;
+  frames.composite.src   = makeSrc(DW.composite, entity);
+  frames.time.src        = makeSrc(DW.time, entity);
+  frames.opportunity.src = makeSrc(DW.opportunity, entity);
+}
+
+function updateAll(){
+  renderInsight();
+  updateFrames();
+  setParams({ park: parkSel.value, a: attrSel.value });
+}
+
+// Events
+parkSel.addEventListener("change", ()=>{
+  populateAttractions(parkSel.value, null);
+  updateAll();
+});
+attrSel.addEventListener("change", updateAll);
+
+// Init
+updateAll();
 </script>
