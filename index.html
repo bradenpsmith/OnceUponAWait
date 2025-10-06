@@ -3,10 +3,223 @@ layout: default
 title: "Tools"
 ---
 
-<h1>🧮 Tools</h1>
-<p style="color:#555;">Interactive, data-driven helpers to outsmart the lines.</p>
+<!-- ===== HERO / CAROUSEL ===== -->
+<section class="ouaw-hero">
+  <div class="hero-track" data-hero-track>
+    <!-- Slide 1 -->
+    <article class="hero-slide is-active">
+      <img src="/assets/tools/urm-hero.jpg" alt="" class="hero-art" loading="eager">
+      <div class="hero-copy">
+        <p class="eyebrow">Featured Tool</p>
+        <h1 class="hero-title">Ultimate Ride Metric</h1>
+        <p class="hero-sub">See when each attraction is the best value vs. others in the same slot—save hours, not minutes.</p>
+        <a class="hero-cta" href="/ultimate-ride-metric/">Open Tool</a>
+      </div>
+    </article>
 
-<ul>
-  <li><a href="/ultimate-ride-metric/">Ultimate Ride Metric</a></li>
-  <li><a href="/crowd-pulse/">Crowd Pulse</a></li>
-</ul>
+    <!-- Slide 2 -->
+    <article class="hero-slide">
+      <img src="/assets/tools/crowd-pulse-hero.jpg" alt="" class="hero-art" loading="lazy">
+      <div class="hero-copy">
+        <p class="eyebrow">Beta</p>
+        <h2 class="hero-title">Crowd Pulse</h2>
+        <p class="hero-sub">Live “heartbeat” of the parks by hour. Spot dips. Plan pounces.</p>
+        <a class="hero-cta" href="/crowd-pulse/">Open Tool</a>
+      </div>
+    </article>
+
+    <!-- Slide 3 (future) -->
+    <article class="hero-slide">
+      <img src="/assets/tools/alerts-hero.jpg" alt="" class="hero-art" loading="lazy">
+      <div class="hero-copy">
+        <p class="eyebrow">Coming Soon</p>
+        <h2 class="hero-title">Personalized Trip Forecasts</h2>
+        <p class="hero-sub">Tell us your dates. We’ll tell you when to ride—and ping you if plans should shift.</p>
+        <a class="hero-cta is-ghost" href="https://onceuponawait.substack.com/subscribe">Get Notified</a>
+      </div>
+    </article>
+  </div>
+
+  <div class="hero-controls">
+    <button class="hero-dot is-active" aria-label="Slide 1" data-hero-dot="0"></button>
+    <button class="hero-dot" aria-label="Slide 2" data-hero-dot="1"></button>
+    <button class="hero-dot" aria-label="Slide 3" data-hero-dot="2"></button>
+  </div>
+</section>
+
+<!-- ===== TOP PICK / MOST POPULAR ===== -->
+<section class="ouaw-top">
+  <div class="top-card">
+    <div class="top-media">
+      <img src="/assets/tools/urm-card.jpg" alt="" loading="lazy">
+    </div>
+    <div class="top-body">
+      <p class="eyebrow">Most Popular</p>
+      <h3 class="top-title"><a href="/ultimate-ride-metric/">Ultimate Ride Metric</a></h3>
+      <p class="top-blurb">A composite score that balances “best time for this ride” and “best ride for this time.” It’s the north star of standby strategy.</p>
+      <a class="link" href="/ultimate-ride-metric/">Open Tool →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="ouaw-sections">
+  <!-- Planning -->
+  <div class="section">
+    <header class="section-head">
+      <h4>Planning</h4>
+      <a class="mini" href="/ultimate-ride-metric/">See all »</a>
+    </header>
+    <div class="card-grid">
+      <article class="card">
+        <img src="/assets/tools/urm-thumb.jpg" alt="">
+        <h5><a href="/ultimate-ride-metric/">Ultimate Ride Metric</a></h5>
+        <p>Pinpoint the smartest windows for each attraction—park by park.</p>
+      </article>
+
+      <article class="card">
+        <img src="/assets/tools/forecasts-thumb.jpg" alt="">
+        <h5>Trip Forecasts <span class="pill">Soon</span></h5>
+        <p>Personalized ride plans and heads-ups if crowd patterns shift.</p>
+      </article>
+    </div>
+  </div>
+
+  <!-- Live Park Pulse -->
+  <div class="section">
+    <header class="section-head">
+      <h4>Live Park Pulse</h4>
+    </header>
+    <div class="card-grid">
+      <article class="card">
+        <img src="/assets/tools/crowd-pulse-thumb.jpg" alt="">
+        <h5><a href="/crowd-pulse/">Crowd Pulse</a></h5>
+        <p>Hourly “how busy is it really?” tracker with trend arrows.</p>
+      </article>
+      <article class="card disabled">
+        <img src="/assets/tools/alerts-thumb.jpg" alt="">
+        <h5>Alerts <span class="pill">Soon</span></h5>
+        <p>Get a ping when waits dip on your must-do list.</p>
+      </article>
+    </div>
+  </div>
+
+  <!-- Research & Deep Dives -->
+  <div class="section">
+    <header class="section-head">
+      <h4>Research & Deep Dives</h4>
+      <a class="mini" href="https://onceuponawait.com/archive">Archive »</a>
+    </header>
+    <div class="card-row">
+      <a class="row-link" href="https://onceuponawait.com/p/the-ultimate-ride-metric">
+        The Ultimate Ride Metric — how it works
+      </a>
+      <a class="row-link" href="https://onceuponawait.com/p/disney-is-better-when-you-leave">
+        Why midday breaks win (with data)
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ALL TOOLS (quick index) ===== -->
+<section class="ouaw-all">
+  <h4 class="all-head">All Tools</h4>
+  <ul class="all-list">
+    <li><a href="/ultimate-ride-metric/">Ultimate Ride Metric</a></li>
+    <li><a href="/crowd-pulse/">Crowd Pulse</a></li>
+  </ul>
+</section>
+
+<style>
+:root{
+  --ink:#202022; --muted:#6b6f76; --border:#e9e9ea; --pill:#f4f6ff; --link:#0b5fff;
+}
+.ouaw-hero{ border-bottom:1px solid var(--border); background:#fff; }
+.hero-track{ position:relative; overflow:hidden; max-width:1100px; margin:0 auto; }
+.hero-slide{
+  display:grid; grid-template-columns: 1.1fr .9fr; gap:40px;
+  align-items:center; padding:28px 20px;
+  opacity:0; transform:translateX(4%); transition:opacity .28s ease, transform .28s ease;
+}
+.hero-slide.is-active{ opacity:1; transform:translateX(0); }
+.hero-art{ width:100%; height:260px; object-fit:cover; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.08); }
+.hero-copy{ max-width:520px; }
+.eyebrow{ text-transform:uppercase; letter-spacing:.06em; font-size:12px; color:var(--muted); margin:0 0 6px; }
+.hero-title{ font-family:'Literata', Georgia, serif; font-weight:700; margin:0 0 8px; }
+.hero-sub{ color:var(--ink); margin:0 0 14px; line-height:1.45; }
+.hero-cta{ display:inline-block; padding:10px 14px; border-radius:8px; background:var(--ink); color:#fff; text-decoration:none; }
+.hero-cta.is-ghost{ background:transparent; color:var(--ink); border:1px solid var(--ink); }
+
+.hero-controls{ display:flex; justify-content:center; gap:8px; padding:4px 0 14px; }
+.hero-dot{ width:8px; height:8px; border-radius:50%; border:1px solid var(--ink); background:transparent; cursor:pointer; }
+.hero-dot.is-active{ background:var(--ink); }
+
+.ouaw-top{ max-width:1100px; margin:26px auto; padding:0 20px; }
+.top-card{ display:grid; grid-template-columns: 380px 1fr; gap:28px; border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.top-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+.top-body{ padding:18px; }
+.top-title{ font-size:24px; margin:6px 0; font-family:'Literata', Georgia, serif; }
+.top-blurb{ color:var(--ink); margin:0 0 10px; }
+.link{ color:var(--link); text-decoration:none; }
+
+.ouaw-sections{ max-width:1100px; margin:8px auto 30px; padding:0 20px; }
+.section{ margin:26px 0; }
+.section-head{ display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:14px; }
+.section-head h4{ margin:0; font-family:'Literata', Georgia, serif; }
+.section-head .mini{ color:var(--muted); text-decoration:none; font-size:14px; }
+
+.card-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
+.card{ border:1px solid var(--border); border-radius:12px; padding:10px; background:#fff; }
+.card.disabled{ opacity:.55; }
+.card img{ width:100%; height:140px; object-fit:cover; border-radius:8px; }
+.card h5{ margin:10px 0 6px; font-size:18px; }
+.card h5 a{ text-decoration:none; color:var(--ink); }
+.card p{ margin:0; color:var(--muted); }
+
+.pill{ background:var(--pill); padding:1px 6px; border-radius:6px; font-size:12px; text-transform:uppercase; letter-spacing:.05em; }
+
+.card-row{ display:grid; gap:8px; }
+.row-link{ padding:10px 12px; border:1px solid var(--border); border-radius:10px; text-decoration:none; color:var(--ink); }
+.row-link:hover{ border-color:#d8d8da; }
+
+.ouaw-all{ max-width:1100px; margin:10px auto 60px; padding:0 20px; }
+.all-head{ border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:10px; font-family:'Literata', Georgia, serif; }
+.all-list{ display:grid; grid-template-columns: repeat(2, 1fr); gap:6px 16px; padding-left:16px; }
+
+@media (max-width:900px){
+  .hero-slide{ grid-template-columns:1fr; }
+  .hero-art{ height:220px; }
+  .top-card{ grid-template-columns:1fr; }
+  .card-grid{ grid-template-columns:1fr 1fr; }
+  .all-list{ grid-template-columns:1fr; }
+}
+@media (max-width:560px){
+  .card-grid{ grid-template-columns:1fr; }
+}
+</style>
+
+<script>
+/* Minimal carousel: dots + auto-advance */
+(function(){
+  const track = document.querySelector('[data-hero-track]');
+  if(!track) return;
+  const slides = [...track.querySelectorAll('.hero-slide')];
+  const dots = [...document.querySelectorAll('[data-hero-dot]')];
+
+  let idx = 0, timer;
+
+  function go(i){
+    idx = (i + slides.length) % slides.length;
+    slides.forEach((s,j)=> s.classList.toggle('is-active', j===idx));
+    dots.forEach((d,j)=> d.classList.toggle('is-active', j===idx));
+    reset();
+  }
+  function reset(){
+    clearInterval(timer);
+    timer = setInterval(()=>go(idx+1), 6000);
+  }
+
+  dots.forEach(d=> d.addEventListener('click', ()=> go(+d.dataset.heroDot)));
+  go(0);
+})();
+</script>
