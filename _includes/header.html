@@ -1,0 +1,80 @@
+<header class="ouaw-header" role="banner">
+  <div class="ouaw-bar">
+    <a href="https://onceuponawait.com" class="ouaw-brand" aria-label="Once Upon A Wait home">
+      <img src="../assets/images/Wordmark.png" alt="Once Upon A Wait" class="ouaw-wordmark" />
+      
+    </a>
+  </div>
+
+  <nav class="ouaw-nav" aria-label="Primary">
+    <a href="https://onceuponawait.com">Home</a>
+    <a href="https://onceuponawait.com/archive">Archive</a>
+    <a href="https://onceuponawait.substack.com/about">About</a>
+    <a href="/">Tools</a>
+  </nav>
+</header>
+
+<style>
+:root{
+  --ink:#212121;
+  --border:#e6e6e6;
+  --underline:#111;
+  --tag-bg:#f4f6ff;
+}
+.ouaw-header{
+  position:sticky; top:0; z-index:1000;
+  background:#fff;
+  font-family:'Literata', Georgia, serif;
+}
+.ouaw-bar{
+  max-width:980px; margin:0 auto;
+  padding:14px 20px 8px;
+  display:flex; flex-direction:column; align-items:center;
+}
+.ouaw-wordmark{ height:42px; display:block; }
+.ouaw-tagline{
+  font-size:12px; letter-spacing:.4px; text-transform:uppercase;
+  color:#00113a; background:var(--tag-bg);
+  padding:2px 8px; border-radius:5px;
+  margin-top:2px;
+}
+
+.ouaw-nav{
+  display:flex; justify-content:center; gap:28px;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  margin-top:10px; padding:10px 0;
+  font-size:15px;
+  font-family:'Literata', Georgia, serif;
+}
+.ouaw-nav a{
+  position:relative; text-decoration:none;
+  color:var(--ink); font-weight:500; padding-bottom:4px;
+}
+.ouaw-nav a::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px;
+  height:2px; background:transparent;
+  transition:transform .18s ease, background .18s ease;
+  transform:scaleX(0); transform-origin:center;
+}
+.ouaw-nav a:hover::after{ background:var(--underline); transform:scaleX(1); }
+.ouaw-nav a[aria-current="page"]::after,
+.ouaw-nav a.is-active::after{
+  background:var(--underline); transform:scaleX(1);
+}
+
+@media (max-width:700px){
+  .ouaw-nav{ flex-wrap:wrap; gap:16px; font-size:14px; }
+}
+</style>
+
+<script>
+// Auto-mark current page in nav
+(function(){
+  const here = location.origin + location.pathname.replace(/\/+$/,'/');
+  document.querySelectorAll('.ouaw-nav a').forEach(a=>{
+    const href = a.href.replace(/\/+$/,'/');
+    if (href === here) a.setAttribute('aria-current','page');
+  });
+})();
+</script>
