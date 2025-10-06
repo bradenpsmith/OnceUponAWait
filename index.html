@@ -129,19 +129,23 @@ title: "Tools"
     <li><a href="/crowd-pulse/">Crowd Pulse</a></li>
   </ul>
 </section>
-
 <style>
 :root{
   --ink:#202022; --muted:#6b6f76; --border:#e9e9ea; --pill:#f4f6ff; --link:#0b5fff;
 }
-.ouaw-hero{ border-bottom:1px solid var(--border); background:#fff; }
-.hero-track{ position:relative; overflow:hidden; max-width:1100px; margin:0 auto; }
+.ouaw-hero{ border-bottom:1px solid var(--border); background:#fff; overflow:hidden; }
+.hero-track{
+  display:flex;
+  transition:transform .6s ease;
+  will-change:transform;
+  max-width:1100px; margin:0 auto;
+}
 .hero-slide{
+  flex:0 0 100%;
   display:grid; grid-template-columns: 1.1fr .9fr; gap:40px;
   align-items:center; padding:28px 20px;
-  opacity:0; transform:translateX(4%); transition:opacity .28s ease, transform .28s ease;
+  opacity:1; transform:none;
 }
-.hero-slide.is-active{ opacity:1; transform:translateX(0); }
 .hero-art{ width:100%; height:260px; object-fit:cover; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.08); }
 .hero-copy{ max-width:520px; }
 .eyebrow{ text-transform:uppercase; letter-spacing:.06em; font-size:12px; color:var(--muted); margin:0 0 6px; }
@@ -153,6 +157,8 @@ title: "Tools"
 .hero-controls{ display:flex; justify-content:center; gap:8px; padding:4px 0 14px; }
 .hero-dot{ width:8px; height:8px; border-radius:50%; border:1px solid var(--ink); background:transparent; cursor:pointer; }
 .hero-dot.is-active{ background:var(--ink); }
+
+/* ---- rest of your previous CSS stays unchanged ---- */
 
 .ouaw-top{ max-width:1100px; margin:26px auto; padding:0 20px; }
 .top-card{ display:grid; grid-template-columns: 380px 1fr; gap:28px; border:1px solid var(--border); border-radius:14px; overflow:hidden; }
@@ -199,18 +205,17 @@ title: "Tools"
 </style>
 
 <script>
-/* Minimal carousel: dots + auto-advance */
+/* Horizontal carousel version */
 (function(){
   const track = document.querySelector('[data-hero-track]');
   if(!track) return;
   const slides = [...track.querySelectorAll('.hero-slide')];
   const dots = [...document.querySelectorAll('[data-hero-dot]')];
-
   let idx = 0, timer;
 
   function go(i){
     idx = (i + slides.length) % slides.length;
-    slides.forEach((s,j)=> s.classList.toggle('is-active', j===idx));
+    track.style.transform = `translateX(-${idx * 100}%)`;
     dots.forEach((d,j)=> d.classList.toggle('is-active', j===idx));
     reset();
   }
