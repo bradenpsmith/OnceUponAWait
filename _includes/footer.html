@@ -1,5 +1,26 @@
-<footer style="border-top:1px solid #eee;text-align:center;font-size:14px;color:#666;margin-top:40px;padding:16px 0;">
-  © <script>document.write(new Date().getFullYear())</script> Once Upon a Wait · 
-  <a href="https://onceuponawait.com" style="color:#0b5fff;">Home</a> · 
-  <a href="https://onceuponawait.substack.com/subscribe" style="color:#0b5fff;">Subscribe</a>
+<footer class="site-footer" role="contentinfo">
+  <p>© <span id="year"></span> Once Upon a Wait ·
+    <a href="/">Home</a> ·
+    <a href="https://your-substack-link">Subscribe</a>
+  </p>
+
+  <p><small>
+    Data aggregated by Once Upon a Wait; primary source:
+    <a href="https://themeparks.wiki" target="_blank" rel="noopener noreferrer">ThemeParks.wiki</a>.
+  </small></p>
+
+  <p class="disclaimer"><em>
+    Not affiliated with or endorsed by <strong>The Walt Disney Company</strong>.
+    Attraction names are used for identification only.
+  </em></p>
 </footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+<style>
+  .site-footer { margin:32px 0 16px; color:#555; font-size:14px; text-align:center; }
+  .site-footer a { color:#2a5bd7; text-decoration:underline; }
+  .site-footer .disclaimer { color:#6b6f76; font-style:italic; margin-top:6px; }
+</style>

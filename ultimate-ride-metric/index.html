@@ -15,6 +15,8 @@ description: "Pick a park and attraction to see Composite, Time, and Opportunity
       <label for="attraction">Attraction</label>
       <select id="attraction"></select>
     </div>
+	
+
   </header>
 
   <!-- Insight (now a feature card) -->
@@ -25,31 +27,37 @@ description: "Pick a park and attraction to see Composite, Time, and Opportunity
     <div class="metric">
       <h3 class="metric-head">Composite Metric</h3>
       <p class="metric-blurb">
-        Balances two ideas at once: how good this time is for <em>this ride</em> compared to its other times, and how this ride compares to <em>other rides</em> available in the same time slot. A higher score means “this is a smart pick right now.”
-      </p>
-      <iframe id="frame-composite" title="Composite Metric" loading="lazy"></iframe>
+        Compares this ride’s wait “value” in two ways: against itself at other times of day, and against other rides available in the same time slot. In other words: is this ride the smartest choice right now?
+
+	  </p>
+	  
+      <div class="dw-clip"><iframe id="frame-composite" title="Composite Metric" loading="lazy"></iframe></div>
+	 
     </div>
 
     <div class="metric">
       <h3 class="metric-head">Time Performance Metric</h3>
       <p class="metric-blurb">
         Looks only at the ride itself. A score near 1 means this window is one of the ride’s best times relative to all the other times you could ride it.
+
       </p>
-      <iframe id="frame-time" title="Time Performance Metric" loading="lazy"></iframe>
+      <div class="dw-clip"><iframe id="frame-time" title="Time Performance Metric" loading="lazy"></iframe></div>
     </div>
 
     <div class="metric">
       <h3 class="metric-head">Opportunity Metric</h3>
       <p class="metric-blurb">
         Compares across the park. A score near 1 means this ride is among the best standby values you’ll find anywhere in the park during this time slot.
+
       </p>
-      <iframe id="frame-opportunity" title="Opportunity Metric" loading="lazy"></iframe>
+      <div class="dw-clip"><iframe id="frame-opportunity" title="Opportunity Metric" loading="lazy"></iframe></div>
     </div>
   </section>
 </section>
 
 <style>
 :root{ --ink:#202022; --muted:#6b6f76; --border:#e9e9ea; --pill:#f4f6ff; }
+.filters-bar { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(6px); }
 
 .urm-wrap{max-width:1100px;margin:10px auto 40px;padding:0 20px;}
 .urm-controls{
@@ -86,9 +94,26 @@ select{
 .metric{ margin-top:20px; }
 .metric-head{ font-family:'Literata', Georgia, serif; margin:8px 0 6px; }
 .metric-blurb{ margin:0 0 8px; color:var(--muted); line-height:1.45; }
-.urm-frames iframe{
-  width:100%;height:520px;border:1px solid var(--border);border-radius:12px;background:#fff;
+/* Cropped Datawrapper container */
+.dw-clip{
+  position: relative;
+  overflow: hidden;          /* hides the search bar area */
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
 }
+
+/* The actual iframe gets shifted up by the crop amount */
+.dw-clip > iframe{
+  width: 100%;
+  border: 0;
+  display: block;
+  transform: translateY(-48px);  /* crop height from the top */
+}
+
+/* Optional: a little inner breathing room */
+.dw-clip{ padding: 10; }          /* keep 0 so the crop math stays exact */
 
 @media (max-width:760px){
   .urm-controls{gap:10px;}
@@ -107,20 +132,62 @@ const PARKS = {
 
 // One list; each attraction knows its park + entity slug
 const ATTRACTIONS = [
-  { park:"magic-kingdom", slug:"its-a-small-world", name:`"it's a small world"`,
-    insight:"Mornings or evenings are usually the sweet spots. Sundays trend strong overall; avoid mid-day standby." },
-  { park:"magic-kingdom", slug:"seven-dwarfs-mine-train", name:"Seven Dwarfs Mine Train",
-    insight:"Rope drop or late nights tend to win; mid-afternoons rarely shine." },
-  { park:"animal-kingdom", slug:"flight-of-passage", name:"Avatar Flight of Passage",
-    insight:"Afternoons can surprise; evenings are often friendlier. Tuesdays sometimes open up in the morning." },
-  // …add the rest
+  { park:"animal-kingdom", slug:"24cf863c-b6ba-4826-a056-0b698989cbf7", name:`Avatar Flight of Passage`, insight:`Generally for FOP stay away from mornings and mid-day. If you are going to standby you should look at late afternoon into the evenings. Buck the rope drop trend here! Wednesday may also provide some unique value.` },
+  { park:"animal-kingdom", slug:"55c531b6-3ce2-4c47-a8a1-0dc9107d825b", name:`DINOSAUR`, insight:`Mornings, or late afternoon evening's look to be the best options if you're going standby. If you must do mid-day, Tuesday or Wednesday may be good options too.` },
+  { park:"animal-kingdom", slug:"64a6915f-a835-4226-ba5c-8389fc4cade3", name:`Expedition Everest - Legend of the Forbidden Mountain`, insight:`Mornings or evenings, stay away during mid-day and afternoon hours..it's rarely worth the wait.` },
+  { park:"animal-kingdom", slug:"d58d9262-ec95-4161-80a0-07ca43b2f5f3", name:`Kali River Rapids`, insight:`Really the only way you can go wrong here is afternoon early or late in the week…otherwise take the plunge.` },
+  { park:"animal-kingdom", slug:"32e01181-9a5f-4936-8a77-0dace1de836c", name:`Kilimanjaro Safaris`, insight:`Don't fall for the rope drop rush, hit this one mid-late afternoons. Just keep in mind the Florida heat may make some of the animals a little less active, so balance your expectations accordingly.` },
+  { park:"animal-kingdom", slug:"7a5af3b7-9bc1-4962-92d0-3ea9c9ce35f0", name:`Na'vi River Journey`, insight:`Best bet is right away in the morning, if not then I would shoot for the evening. Pandora glowing after dark is worth the trip on its own.` },
+  { park:"epcot", slug:"8d7ccdb1-a22b-4e26-8dc8-65b1938ed5f0", name:`Frozen Ever After`, insight:`The cold may not bother me, but standby waits do…you are in a good spot if you stay away from this in the mid-late afternoon hours. Morning through mid day, and evenings look to be good options.` },
+  { park:"epcot", slug:"22f48b73-01df-460e-8969-9eb2b4ae836c", name:`Gran Fiesta Tour Starring The Three Caballeros`, insight:`Mornings, evenings and mid-week afternoons are great options here for standby.` },
+  { park:"epcot", slug:"e3549451-b284-453d-9c31-e3b1207abd79", name:`Guardians of the Galaxy: Cosmic Rewind`, insight:`Mid-week mornings or Thursday evenings are good standby options overall. Compared to the rest of Epcot, many days of the week mid-day is actually a pretty good way to use your standby waits. I am Groot…which in this case means, get in line.` },
+  { park:"epcot", slug:"75449e85-c410-4cef-a368-9d2ea5d52b58", name:`Journey Into Imagination With Figment`, insight:`One little spark of inspiration to avoid waits would suggest you hit this one in the mornings, late afternoon or evenings.` },
+  { park:"epcot", slug:"8f353879-d6ac-4211-9352-4029efb47c18", name:`Living with the Land`, insight:`Can't really go wrong here…maybe stay away from mid-day and you will be truly living with the land.` },
+  { park:"epcot", slug:"5b6475ad-4e9a-4793-b841-501aa382c9c0", name:`Mission: SPACE`, insight:`The only way you can really go wrong is mid-day early or late in the week. Otherwise, you’re clear for launch` },
+  { park:"epcot", slug:"1e735ffb-4868-47f1-b2cd-2ac1156cd5f0", name:`Remy's Ratatouille Adventure`, insight:`As long as you avoid mid to late afternoon, you should be good. Remember, Gusteau said anyone can cook…and yes, anyone can wait in this line too.` },
+  { park:"epcot", slug:"81b15dfd-cf6a-466f-be59-3dd65d2a2807", name:`Soarin' Around the World`, insight:`Mornings, evenings or mid-week afternoons? Nice work pal, soarin' is ready for takeoff.` },
+ // { park:"epcot", slug:"37ae57c5-feaf-4e47-8f27-4b385be200f0", name:`Test Track`, insight:`Mornings, or late evening's will probably be best…but mid-week afternoons could be intriguing. ` },
+  { park:"epcot", slug:"fb076275-0570-4d62-b2a9-4d6515130fa3", name:`The Seas with Nemo & Friends`, insight:`Just keep standby waitin' cannot go wrong here EXCEPT for mid-days.` },
+  { park:"hollywood-studios", slug:"d56506e2-6ad3-443a-8065-fea37987248d", name:`Alien Swirling Saucers`, insight:`Mornings or late evening are generally a better bet for going standby on Alien Swirling Saucers. ` },
+  { park:"hollywood-studios", slug:"6e118e37-5002-408d-9d88-0b5d9cdb5d14", name:`Mickey & Minnie's Runaway Railway`, insight:`Generally late evening's are best…nothing can stop you now!` },
+  { park:"hollywood-studios", slug:"34c4916b-989b-4ff1-a7e3-a6a846a3484f", name:`Millennium Falcon: Smugglers Run`, insight:`Steer clear of mid-day into afternoons and you should complete this queue faster than the Kessel Run.` },
+  { park:"hollywood-studios", slug:"e516f303-e82d-4fd3-8fbf-8e6ab624cf89", name:`Rock 'n' Roller Coaster Starring Aerosmith`, insight:`Go in the morning!....wait a minute…I love that idea! ` },
+  { park:"hollywood-studios", slug:"399aa0a1-98e2-4d2b-b297-2b451e9665e1", name:`Slinky Dog Dash`, insight:`Golly bob-howdy! Skip high noon, Slinky is all tangled then. But early or late? Those are key.` },
+  { park:"hollywood-studios", slug:"3b290419-8ca2-44bc-a710-a6c83fca76ec", name:`Star Tours – The Adventures Continue`, insight:`Whether it's your first flight or not…I would avoid mid-days and you should be good! ` },
+  { park:"hollywood-studios", slug:"1a2e70d9-50d5-4140-b69e-799e950f7d18", name:`Star Wars: Rise of the Resistance`, insight:`Your first order of business should NOT be hitting ROTR standby, but if you must, late evenings are the best! ` },
+  { park:"hollywood-studios", slug:"6f6998e8-a629-412c-b964-2cb06af8e26b", name:`The Twilight Zone Tower of Terror™`, insight:`I would really recommend morning visits to the tip-top club here! ` },
+  { park:"hollywood-studios", slug:"20b5daa8-e1ea-436f-830c-2d7d18d929b5", name:`Toy Story Mania!`, insight:`Generally late evenings followed by mornings are going to be your best standby value for TSMM.` },
+  { park:"magic-kingdom", slug:"f5aad2d4-a419-4384-bd9a-42f86385c750", name:`"it's a small world"`, insight:`Morning's or evenings are a great option for IASW. Sunday's overall are great options too. I would stay away from Standby during the mid-day hours.` },
+  { park:"magic-kingdom", slug:"d9d12438-d999-4482-894b-8955fdb20ccf", name:`Astro Orbiter`, insight:`Mornings, evenings or Sunday appear to provide the best standby options for Astro Orbiter.` },
+  //{ park:"magic-kingdom", slug:"0f57cecf-5502-4503-8bc3-ba84d3708ace", name:`Country Bear Musical Jamboree`, insight:`May be a quirk in the data here, but if you're just a big fan of Country Bear Jamboree and want to enjoy it in peace, look at Wednesday or Thursday afternoons.` },
+  { park:"magic-kingdom", slug:"890fa430-89c0-4a3f-96c9-11597888005e", name:`Dumbo the Flying Elephant`, insight:`If you have never seen an elephant fly, mornings or evenings are great times. Sunday's also look to provide good value here.` },
+  { park:"magic-kingdom", slug:"e76c93df-31af-49a5-8e2f-752c76c937c9", name:`Enchanted Tales with Belle`, insight:`Morning's or any time on Sunday are good options here. Specifically Wednesday morning looks to be the best option.` },
+  { park:"magic-kingdom", slug:"2551a77d-023f-4ab1-9a19-8afec0190f39", name:`Haunted Mansion`, insight:`Don't be a foolish mortal, mornings or evenings if you're going to wait this one out. During the mid-day periods…the queue has a way of stretching…and the only way to find a way out is to wait.` },
+  { park:"magic-kingdom", slug:"796b0a25-c51e-456e-9bb8-50a324e301b3", name:`Jungle Cruise`, insight:`I would suggest evenings, followed by mornings, and don’t overlook Sunday, which may surprise you. Otherwise, you may be staring at the ninth wonder of the world… the backside of a long wait…` },
+  { park:"magic-kingdom", slug:"0aae716c-af13-4439-b638-d75fb1649df3", name:`Mad Tea Party`, insight:`Lots of opportunity with this one, though Monday and Wednesday mid-day into afternoon can feel like a very un-merry wait-day.` },
+  { park:"magic-kingdom", slug:"e8f0b426-7645-4ea3-8b41-b94ae7091a41", name:`Monsters Inc. Laugh Floor`, insight:`` },
+  { park:"magic-kingdom", slug:"86a41273-5f15-4b54-93b6-829f140e5161", name:`Peter Pan's Flight`, insight:`Evening or morning and you can fly through the queue with this one.` },
+  { park:"magic-kingdom", slug:"352feb94-e52e-45eb-9c92-e4b44c6b1a9d", name:`Pirates of the Caribbean`, insight:`Mornings or evenings, and maybe Sunday afternoons. Yo-Ho-Yo-Ho it's the standby line for ye.` },
+  { park:"magic-kingdom", slug:"273ddb8d-e7b5-4e34-8657-1113f49262a5", name:`Prince Charming Regal Carrousel`, insight:`Not much opportunity to mess this one up, just look for a green/white space on the board…any of them.` },
+  { park:"magic-kingdom", slug:"9d4d5229-7142-44b6-b4fb-528920969a2c", name:`Seven Dwarfs Mine Train`, insight:`This should be good in the evening. Hi-ho, hi-oh, to the standby line you go` },
+  { park:"magic-kingdom", slug:"b2260923-9315-40fd-9c6b-44dd811dbe64", name:`Space Mountain`, insight:`Morning missions, especially toward week’s end, are your best launch window.` },
+  { park:"magic-kingdom", slug:"924a3b2c-6b4b-49e5-99d3-e9dc3f2e8a48", name:`The Barnstormer`, insight:`Mornings, evenings or Sunday appear to be the best value for your standby minutes with the great Goofini.` },
+  { park:"magic-kingdom", slug:"2ebfb38c-5cb5-4de1-86c0-f7af14188022", name:`The Hall of Presidents`, insight:`You cannot really go wrong here, but morning's overall would be a bad idea. There are better values and you don't even need to enjoy the AC then! ` },
+  { park:"magic-kingdom", slug:"96455de6-f4f1-403c-9391-bf8396979149", name:`The Magic Carpets of Aladdin`, insight:`Mornings or evening's here are the best time to visit Agrabah! ` },
+  { park:"magic-kingdom", slug:"0d94ad60-72f0-4551-83a6-ebaecdd89737", name:`The Many Adventures of Winnie the Pooh`, insight:`Oh Bother, evening's are probably your best bet from a value perspective. Morning's are not bad either in regards to telling that line TTFN!` },
+  { park:"magic-kingdom", slug:"73cb9445-0695-47a3-87ce-d08ae36b5f3c", name:`Tiana's Bayou Adventure`, insight:`Morning's are great…however evening's are good too…but there may be slightly better uses of your standby minutes in the evening.` },
+  { park:"magic-kingdom", slug:"f163ddcd-43e1-488d-8276-2381c1db0a39", name:`Tomorrowland Speedway`, insight:`If you must…try it in the evenings…that is all I have here.` },
+  { park:"magic-kingdom", slug:"ffcfeaa2-1416-4920-a1ed-543c1a1695c4", name:`Tomorrowland Transit Authority PeopleMover`, insight:`Now approaching low waits! Morning's are best, but this is probably another one that doesn't matter a whole lot.` },
+  { park:"magic-kingdom", slug:"5a43d1a7-ad53-4d25-abfe-25625f0da304", name:`TRON Lightcycle / Run`, insight:`Overall mid-day into afternoons and some evenings seem to be your best values if you are/can standby Tron.` },
+  { park:"magic-kingdom", slug:"3cba0cb4-e2a6-402c-93ee-c11ffcb127ef", name:`Under the Sea - Journey of The Little Mermaid`, insight:`Mornings or evenings are when you need to sha-la-la-la stand in line, and you will be fine go on and hit the queue! ` },
+  { park:"magic-kingdom", slug:"6fd1e225-53a0-4a80-a577-4bbc9a471075", name:`Walt Disney's Enchanted Tiki Room`, insight:`Your siestas may not be getting shorter and shorter,  but this is a GREAT afternoon choice. Get out of the heat! ` },
 ];
 
 // One set of DW charts for all parks (pass only the entity slug)
 const DW = {
-  composite:  "https://datawrapper.dwcdn.net/XXXX1/",
-  time:       "https://datawrapper.dwcdn.net/XXXX2/",
-  opportunity:"https://datawrapper.dwcdn.net/XXXX3/"
+  composite:  "https://datawrapper.dwcdn.net/wOUEp/3/",
+  time:       "https://datawrapper.dwcdn.net/VhNOI/",
+  opportunity:"https://datawrapper.dwcdn.net/IfqyZ/"
 };
 const DW_PARAM_KEY = "a";
 
@@ -143,10 +210,10 @@ const setParams = (obj) => {
   history.replaceState(null,"",`?${p.toString()}`);
 };
 
-function makeSrc(base, entitySlug){
-  const url = new URL(base);
-  url.searchParams.set(DW_PARAM_KEY, entitySlug);
-  url.searchParams.set("theme","light"); // optional
+function makeSrc(base, entitySlug) {
+  const url = new URL(base); // e.g. "https://datawrapper.dwcdn.net/abcd1/"
+  if (entitySlug) url.searchParams.set("search", entitySlug); // <-- key change
+  //url.searchParams.set("theme", "light"); // optional, if your chart theme supports it
   return url.toString();
 }
 
@@ -197,13 +264,14 @@ function renderInsight(){
   `;
 }
 
-function updateFrames(){
-  const entity = attrSel.value;
+function updateFrames() {
+  const selectEl = document.getElementById("attraction"); // or whatever your id is
+  const entity = selectEl.options[selectEl.selectedIndex].text; // <-- use text, not .label
+
   frames.composite.src   = makeSrc(DW.composite, entity);
   frames.time.src        = makeSrc(DW.time, entity);
   frames.opportunity.src = makeSrc(DW.opportunity, entity);
 }
-
 function updateAll(){
   renderInsight();
   updateFrames();
@@ -219,4 +287,30 @@ attrSel.addEventListener("change", updateAll);
 
 // Init
 updateAll();
+
+// How many pixels you’re cropping from the top
+  const DW_CROP_OFFSET = 44; // tweak to 40–50px if needed per theme
+
+  // Adjust heights as Datawrapper reports them
+  window.addEventListener("message", (e) => {
+    const data = e.data;
+    if (!data || !data["datawrapper-height"]) return;
+
+    for (const chartId in data["datawrapper-height"]) {
+      const fullHeight = data["datawrapper-height"][chartId];
+
+      // Find the iframe by chart id
+      const iframe = document.querySelector(`iframe[src*="/${chartId}/"]`);
+      if (!iframe) continue;
+
+      // Set the iframe to full content height (unclipped, so translateY works)
+      iframe.style.height = fullHeight + "px";
+
+      // The wrapper shows a cropped viewport
+      const wrap = iframe.closest(".dw-clip");
+      if (wrap) wrap.style.height = Math.max(0, fullHeight - DW_CROP_OFFSET) + "px";
+    }
+  });
+  
+
 </script>
