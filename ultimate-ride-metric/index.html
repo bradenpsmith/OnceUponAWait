@@ -15,7 +15,7 @@ description: "Pick a park and attraction to see Composite, Time, and Opportunity
   </div>
 </div>
 	
-	<button id="share">Share</button>
+	  <!-- <button id="share">Share</button>-->
   </header>
 
   <!-- Insight (now a feature card) -->
@@ -298,8 +298,8 @@ function renderInsight(){
 }
 
 function updateFrames() {
-  const selectEl = document.getElementById("attraction"); // or whatever your id is
-  const entity = selectEl.options[selectEl.selectedIndex].text; // <-- use text, not .label
+  const selectEl = document.getElementById("attraction"); 
+  const entity = selectEl.options[selectEl.selectedIndex].text; 
 
   frames.composite.src   = makeSrc(DW.composite, entity);
   frames.time.src        = makeSrc(DW.time, entity);
